@@ -1,6 +1,6 @@
 import React from 'react'
 
-function Header() {
+function Header({onShare}) {
   return (
     <div className='flex h-[10vh]'>
 
@@ -12,7 +12,7 @@ function Header() {
       </div>
       <div className='w-4 bg-neutral-200 rounded-full h-4 cursor-pointer'></div>
       <div className='flex pr-10 pl-10 w-max'>
-        <button className='cursor-pointer text-center hover:scale-95 transition-all duration-300 ease-in-out hover:text-neutral-400/50 underline'>share</button>
+        <button className='cursor-pointer text-center hover:scale-95 transition-all duration-300 ease-in-out hover:text-neutral-400/50 underline' onClick={onShare}>share</button>
       </div>
     </div>
 
