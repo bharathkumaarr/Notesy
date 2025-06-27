@@ -10,11 +10,15 @@ function TextArea({content, setContent, noteId, setNoteId}) {
   const autoSave = useRef(
     debounce(async (text) => {
       try {
-        if (noteId) return // already saved
-        const res = await axios.post('http://localhost:3000/notesy', { content: text })
-        const newId = res.data.id
-        setNoteId(newId)
-        window.history.pushState({}, '', `/${newId}`)
+        if (noteId) {
+          await axios.put(`http://localhost:3000/notesy/${noteId}`, { content: text });
+        } else {
+          const res = await axios.post('http://localhost:3000/notesy', { content: text })
+          const newId = res.data.id
+          setNoteId(newId)
+          window.history.pushState({}, '', `/${newId}`)
+        }
+        
       } catch (err) {
         console.error('Auto-save failed', err)
       }
