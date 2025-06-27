@@ -26,4 +26,20 @@ router.get('/:id', async (req,res)=>{
     }
 })
 
+router.put('/:id', async (req, res) => {
+  try {
+    const { content } = req.body;
+    const updatedNote = await NotesyModel.findByIdAndUpdate(
+      req.params.id,
+      { content },
+      { new: true } // return the updated document
+    );
+    if (!updatedNote) return res.status(404).json({ error: 'Note not found' });
+    res.json(updatedNote);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+
 module.exports = router
