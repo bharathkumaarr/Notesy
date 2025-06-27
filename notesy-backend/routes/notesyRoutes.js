@@ -32,7 +32,7 @@ router.put('/:id', async (req, res) => {
     const updatedNote = await NotesyModel.findByIdAndUpdate(
       req.params.id,
       { content },
-      { new: true } // return the updated document
+      { new: true } 
     );
     if (!updatedNote) return res.status(404).json({ error: 'Note not found' });
     res.json(updatedNote);

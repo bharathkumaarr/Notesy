@@ -6,26 +6,36 @@ import axios from 'axios'
 function TextArea({content, setContent, noteId, setNoteId}) {
 
   const isFirstLoad = useRef(true)
-
-  const autoSave = useRef(
-    debounce(async (text) => {
-      try {
-        if (noteId) {
-          await axios.put(`http://localhost:3000/notesy/${noteId}`, { content: text });
-        } else {
-          const res = await axios.post('http://localhost:3000/notesy', { content: text })
-          const newId = res.data.id
-          setNoteId(newId)
-          window.history.pushState({}, '', `/${newId}`)
-        }
-        
-      } catch (err) {
-        console.error('Auto-save failed', err)
-      }
-    }, 1000)
-  ).current
+  const noteIdRef = useRef(noteId)
+  const hasPushedURL = useRef(false)
 
   useEffect(() => {
+    noteIdRef.current = noteId
+  }, [noteId])
+
+const autoSave = useRef(
+  debounce(async (text) => {
+    try {
+      if (noteIdRef.current) {
+        await axios.put(`http://localhost:3000/notesy/${noteIdRef.current}`, { content: text })
+      } else {
+        const res = await axios.post('http://localhost:3000/notesy', { content: text })
+        const newId = res.data.id
+        noteIdRef.current = newId
+        setNoteId(newId)
+
+        if (!hasPushedURL.current) {
+          window.history.pushState({}, '', `/${newId}`)
+          hasPushedURL.current = true
+        }
+      }
+    } catch (err) {
+      console.error('Auto-save failed', err)
+    }
+  }, 1000)
+).current
+
+useEffect(() => {
     if (!isFirstLoad.current) {
       autoSave(content)
     } else {
