@@ -4,13 +4,16 @@ const NotesyModel = require('../models/NotesyModel')
 
 router.post('/', async (req,res)=>{
     try {
-        const {content} = req.body;
+        if (!content || content.trim() === "") {
+          return res.status(400).json({ error: "Content is required" });
+        }
         const note = new NotesyModel({content})
         const savedNote = await note.save();
         res.json({id: savedNote._id});
 
     }
     catch (err) {
+        console.error('Error saving note:', err);
         res.status(500).json({error: err.message})
     }
 })
