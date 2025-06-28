@@ -14,7 +14,6 @@ function TextArea({content, setContent, noteId, setNoteId}) {
   useEffect(() => {
     noteIdRef.current = noteId
   }, [noteId])
-  console.log('API_URL is:', API_URL)
 
 const autoSave = useRef(
   debounce(async (text) => {
