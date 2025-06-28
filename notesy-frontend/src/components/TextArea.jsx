@@ -2,6 +2,8 @@ import React from 'react'
 import debounce from 'lodash/debounce'
 import { useRef, useEffect } from 'react'
 import axios from 'axios'
+const API_URL = import.meta.env.VITE_BACKEND;
+
 
 function TextArea({content, setContent, noteId, setNoteId}) {
 
@@ -19,9 +21,9 @@ const autoSave = useRef(
       if (!text.trim()) return //skip saving empty text 
 
       if (noteIdRef.current) {
-        await axios.put(`http://localhost:3000/notesy/${noteIdRef.current}`, { content: text })
+        await axios.put(`${API_URL}/${noteIdRef.current}`, { content: text })
       } else {
-        const res = await axios.post('http://localhost:3000/notesy', { content: text })
+        const res = await axios.post(`${API_URL}`, { content: text })
         const newId = res.data.id
         noteIdRef.current = newId
         setNoteId(newId)
@@ -53,7 +55,7 @@ useEffect(() => {
 
       <div className='w-2/4 border border-neutral-400/10 p-2'>
         <div className='text-center '>
-          <h6 className='text-red-400 text-xs'>runing this backend server on a free tier, <a href="https://usenotesy.onrender.com/" className='underline' target='_blank'>click here</a> and try again. cheers:)</h6>
+          <h6 className='text-red-400 text-xs'>runing this on a free instance, <a href="https://notesy-1wk6.onrender.com" className='underline' target='_blank'>click here</a> and try again. cheers:)</h6>
         </div>
         <textarea rows="10" 
           className='w-full h-full p-10 outline-0 text-neutral-300 max-h-20/20' placeholder='The only thing getting laid tonight is the idea on this page..' 

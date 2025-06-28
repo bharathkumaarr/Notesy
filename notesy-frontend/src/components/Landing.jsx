@@ -4,6 +4,8 @@ import TextArea from './TextArea'
 import Footer from './Footer'
 import { useState, useEffect } from 'react'
 import axios from 'axios'
+const API_URL = import.meta.env.VITE_BACKEND;
+
 
 function Landing() {
   const [content, setContent] = useState('')
@@ -12,7 +14,7 @@ function Landing() {
   useEffect(()=>{
     const idFromUrl = window.location.pathname.split('/')[1]
     if(idFromUrl) {
-      axios.get(`http://localhost:3000/notesy/${idFromUrl}`)
+      axios.get(`${API_URL}/${idFromUrl}`)
       .then(res=>{
         setContent(res.data.content)
         setNoteId(idFromUrl)
@@ -24,7 +26,7 @@ function Landing() {
   const handleShare = async () =>{
     try {
       if (!noteId) {
-        const res = await axios.post(`http://localhost:3000/notesy`, {content})
+        const res = await axios.post(`${API_URL}`, {content})
         const newId = res.data.id
         setNoteId(newId)
         window.history.pushState({}, '', `/${newId}`)
