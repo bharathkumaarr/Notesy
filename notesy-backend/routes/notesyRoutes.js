@@ -4,6 +4,7 @@ const NotesyModel = require('../models/NotesyModel')
 
 router.post('/', async (req,res)=>{
     try {
+        const { content } = req.body;
         if (!content || content.trim() === "") {
           return res.status(400).json({ error: "Content is required" });
         }
