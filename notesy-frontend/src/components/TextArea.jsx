@@ -23,7 +23,7 @@ const autoSave = useRef(
       if (noteIdRef.current) {
         await axios.put(`${API_URL}/${noteIdRef.current}`, { content: text })
       } else {
-        const res = await axios.post(`${API_URL}`, { content: text })
+        const res = await axios.post(`${API_URL}/`, { content: text })
         const newId = res.data.id
         noteIdRef.current = newId
         setNoteId(newId)
